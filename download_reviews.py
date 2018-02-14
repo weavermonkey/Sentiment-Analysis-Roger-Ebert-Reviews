@@ -29,6 +29,9 @@ def scroll_to_bottom(webpage):
         if last_count == len_of_page:
             match = True
 
+def call_omdb_api(movie_title):
+    request_url = 'http://www.omdbapi.com/?apikey=9f6c117a&t='+movie_title.replace(' ','+')+'&plot=full'
+    print request_url
 
 def get_rating(movie_name, star_param):
     movie_rating = 0.0
@@ -63,7 +66,7 @@ def read_review(url):
 
 
 def read_html_page(home_page):
-    movie_review_dict = {'movie_title': [], 'reviewed_by': [], 'score': [], 'review_url': [],'review_text':[]}
+    movie_review_dict = {'movie_title': [], 'reviewed_by': [], 'score': [], 'review_url': [], 'review_text': []}
     result = requests.get(url=home_page)
     result_content = result.content
     soup_obj = BeautifulSoup(result_content, 'html5lib')
@@ -80,14 +83,20 @@ def read_html_page(home_page):
         movie_review_dict['reviewed_by'].append(movie_critic.strip())
         movie_review_dict['score'].append(movie_review_score)
         movie_review_dict['review_url'].append(movie_review_url.strip())
-        movie_review_dict['review_text'].append( movie_review )
-        #print 'Current Movie: ',movie_title, 'URL: ',movie_review_url,'\n\t',movie_review,'\n#####################################'
-    return movie_review_dict
-
+        movie_review_dict['review_text'].append(movie_review)
+        #print 'Current Movie: ', movie_title, 'URL: ', movie_review_url, '\n\t', movie_review, '\n#####################################'
+         #omdb_details = call_omdb_api(movie_title=movie_title)
+    #return movie_review_dict
+    '''
+    for curr_movie_dom in wrapper_class:
+        print curr_movie_dom
+    '''
 
 def save_webpage_to_csv():
     movie_details = read_html_page('http://www.rogerebert.com/reviews')
     movie_df = pd.DataFrame.from_dict(movie_details)
-    movie_df.to_csv('roger_ebert_reviews.csv', index=False)
+    movie_df.to_csv('roger_ebert_reviews.csv', header=False, mode='a', index=False)
 
-save_webpage_to_csv()
+
+# save_webpage_to_csv()
+movie_details = read_html_page('http://www.rogerebert.com/reviews')
