@@ -7,7 +7,6 @@ import pandas as pd
 
 
 def choose_ebert_reviews():
-    # driver = webdriver.Firefox()
     driver = webdriver.Firefox()
     driver.get('http://www.rogerebert.com/reviews')
     driver.find_element_by_xpath(
@@ -24,7 +23,7 @@ def scroll_to_bottom(webpage):
     match = False
     while (match == False):
         last_count = len_of_page
-        time.sleep(0.43)
+        time.sleep(0.45)
         len_of_page = driver.execute_script(
             "window.scrollTo(0, document.body.scrollHeight);var len_of_page=document.body.scrollHeight;return len_of_page;")
         if last_count == len_of_page:
@@ -41,6 +40,13 @@ def get_rating(movie_name, star_param):
         else:
             movie_rating += 0.5
     return movie_rating
+
+
+def read_review(url):
+    review_page_raw = requests.get(url=url)
+    soup_obj = BeautifulSoup(review_page_raw.content, 'html5lib')
+    review_paragraphs = soup_obj.find('div',class_='wrapper').find('div',class_='grid content').find_all('section',class_='main fixed-rail')[0].find_all('article',class_='pad entry')[0].find_all('div')[0].find_all('p')
+    print review_paragraphs[0].prettify()
 
 
 def read_html_page(home_page):
@@ -60,14 +66,13 @@ def read_html_page(home_page):
         movie_review_dict['reviewed_by'].append(movie_critic)
         movie_review_dict['score'].append(movie_review_score)
         movie_review_dict['review_url'].append(movie_review_url)
-    return movie_review_dict
+    # return movie_review_dict
 
 
 def save_webpage_to_csv():
     movie_details = read_html_page('http://www.rogerebert.com/reviews')
     movie_df = pd.DataFrame.from_dict(movie_details)
     # print movie_df.head()
-    movie_df.to_csv('roger_ebert_reviews', index=False)
+    movie_df.to_csv('roger_ebert_reviews.csv', index=False)
 
-
-save_webpage_to_csv()
+read_review('https://www.rogerebert.com/reviews/the-female-brain-2018')
