@@ -1,9 +1,9 @@
-from bs4 import BeautifulSoup
 from selenium import webdriver
-import time
 import requests
-from pprint import pprint
+from bs4 import BeautifulSoup
+import time
 import pandas as pd
+from pprint import pprint
 
 
 def choose_ebert_reviews():
@@ -44,13 +44,26 @@ def get_rating(movie_name, star_param):
 
 def read_review(url):
     review_page_raw = requests.get(url=url)
+    cleaned_review = []
     soup_obj = BeautifulSoup(review_page_raw.content, 'html5lib')
-    review_paragraphs = soup_obj.find('div',class_='wrapper').find('div',class_='grid content').find_all('section',class_='main fixed-rail')[0].find_all('article',class_='pad entry')[0].find_all('div')[0].find_all('p')
-    print review_paragraphs[0].prettify()
+    review_paragraphs = soup_obj.find('div', class_='wrapper').find('div', class_='grid content').find_all('section',
+                                                                                                           class_='main fixed-rail')[
+        0].find_all('article', class_='pad entry')[0].find_all('div')[0].find_all('p')
+    raw_review = ''.join(
+        [curr_paragraph.replace("\n", "").replace("<p>", "").replace("</p>", "").replace("\u2019", "\'") for
+         curr_paragraph in ([review_paragraph.prettify() for review_paragraph in review_paragraphs])]).encode('utf-8')
+    review_cleaned = BeautifulSoup(raw_review, 'html5lib')
+
+    for x in review_cleaned.body:
+        if 'bs4.element.Tag' in str(type(x)):
+            cleaned_review.append(x.get_text().encode('utf-8').strip())
+        else:
+            cleaned_review.append(str(x.encode('utf-8')).strip())
+    return ' '.join(cleaned_review)
 
 
 def read_html_page(home_page):
-    movie_review_dict = {'movie_title': [], 'reviewed_by': [], 'score': [], 'review_url': []}
+    movie_review_dict = {'movie_title': [], 'reviewed_by': [], 'score': [], 'review_url': [],'review_text':[]}
     result = requests.get(url=home_page)
     result_content = result.content
     soup_obj = BeautifulSoup(result_content, 'html5lib')
@@ -62,17 +75,19 @@ def read_html_page(home_page):
         convoluted_rating = curr_movie_dom.find('span', class_='star-rating').find_all('i')
         movie_review_score = get_rating(movie_title, convoluted_rating)
         movie_review_url = home_page + curr_movie_dom.find('h5', class_='title').find_all('a')[0]['href'][8:]
-        movie_review_dict['movie_title'].append(movie_title)
-        movie_review_dict['reviewed_by'].append(movie_critic)
+        movie_review = str(read_review(url=movie_review_url))
+        movie_review_dict['movie_title'].append(movie_title.strip())
+        movie_review_dict['reviewed_by'].append(movie_critic.strip())
         movie_review_dict['score'].append(movie_review_score)
-        movie_review_dict['review_url'].append(movie_review_url)
-    # return movie_review_dict
+        movie_review_dict['review_url'].append(movie_review_url.strip())
+        movie_review_dict['review_text'].append( movie_review )
+        #print 'Current Movie: ',movie_title, 'URL: ',movie_review_url,'\n\t',movie_review,'\n#####################################'
+    return movie_review_dict
 
 
 def save_webpage_to_csv():
     movie_details = read_html_page('http://www.rogerebert.com/reviews')
     movie_df = pd.DataFrame.from_dict(movie_details)
-    # print movie_df.head()
     movie_df.to_csv('roger_ebert_reviews.csv', index=False)
 
-read_review('https://www.rogerebert.com/reviews/the-female-brain-2018')
+save_webpage_to_csv()
