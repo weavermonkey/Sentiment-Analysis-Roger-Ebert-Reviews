@@ -7,15 +7,7 @@ import pandas as pd
 import json
 from pprint import pprint
 
-#camelcase_to_underscore = lambda str: re.sub('(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))', '_\\1', str).lower().strip('_')
-omdb_data = requests.get('http://www.omdbapi.com/?apikey=9f6c117a&t=Basmati+Blues&plot=full')
-movie_review_dict = {'movie_title': [], 'reviewed_by': [], 'score': [], 'review_url': [], 'review_text': []
-                     }
-pprint(movie_review_dict)
-y = json.loads(omdb_data.content)
-for curr_key in y.keys():
-    movie_review_dict[curr_key] = []
-pprint(movie_review_dict)
+# camelcase_to_underscore = lambda str: re.sub('(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))', '_\\1', str).lower().strip('_')
 
 def choose_ebert_reviews():
     driver = webdriver.Firefox()
@@ -80,46 +72,36 @@ def read_review(url):
 
 
 def read_html_page(home_page):
-    movie_details = movie_review_dict
+    movie_data_rows = []
     result = requests.get(url=home_page)
     result_content = result.content
     soup_obj = BeautifulSoup(result_content, 'html5lib')
     wrapper_class = soup_obj.find('div', id='review-list')
     for curr_movie_dom in wrapper_class.find_all('figure'):
+        movie_details = {'movie_title': '', 'reviewed_by': '', 'score': 0.0, 'review_url': '', 'review_text': ''}
         star_list = []
         movie_title = curr_movie_dom.find('h5', class_='title').a.get_text()
         movie_critic = curr_movie_dom.find('p', class_='byline').get_text().strip()
-        convoluted_rating = curr_movie_dom.find('span', class_='star-rating').find_all('i')
+        convoluted_rating   = curr_movie_dom.find('span', class_='star-rating').find_all('i')
         movie_review_score = get_rating(movie_title, convoluted_rating)
         movie_review_url = home_page + curr_movie_dom.find('h5', class_='title').find_all('a')[0]['href'][8:]
         movie_review = read_review(url=movie_review_url)
         omdb_dict = get_omdb_data(movie_title=movie_title)
-        movie_details['movie_title'].append(movie_title.strip())
-        movie_details['reviewed_by'].append(movie_critic.strip())
-        movie_details['score'].append(movie_review_score)
-        movie_details['review_url'].append(movie_review_url)
-        movie_details['review_text'].append(movie_review)
+        movie_details['movie_title'] = movie_title.strip()
+        movie_details['reviewed_by'] = movie_critic.strip()
+        movie_details['ebert_score'] = movie_review_score
+        movie_details['review_url'] = movie_review_url
+        movie_details['review_text'] = movie_review
         for curr_key in omdb_dict.keys():
-            if curr_key in movie_details:
-                movie_details[curr_key].append(omdb_dict[curr_key])
-            else:
-                movie_details[curr_key] = []
-                movie_details[curr_key].append(omdb_dict[curr_key])
-        #print 'Current Movie: ',movie_title,'\n',pprint(movie_details), '\n#####################################'
-    #pprint(movie_details)
-    return movie_details
+            movie_details[curr_key] = (omdb_dict[curr_key])
+        movie_data_rows.append(movie_details)
+    return movie_data_rows
 
 
 def save_webpage_to_csv():
-    movie_details = read_html_page('http://www.rogerebert.com/reviews')
-    #pprint(movie_details )
-    for curr_key in movie_details:
-        print curr_key, len( movie_details[curr_key] )
-    movie_df = pd.DataFrame(movie_details)
-    print movie_df.head()
-    movie_df = pd.DataFrame.from_dict(movie_details)
-
-    movie_df.to_csv('roger_ebert_reviews.csv', mode='w', index=False)
-
+    movie_data_rows = read_html_page('http://www.rogerebert.com/reviews')
+    x = pd.DataFrame.from_records(movie_data_rows)
+    print x.head()
+    x.to_csv('roger_ebert_reviews.csv',index=False,encoding='utf-8')
 
 save_webpage_to_csv()
