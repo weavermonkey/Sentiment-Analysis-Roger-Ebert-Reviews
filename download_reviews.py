@@ -7,6 +7,7 @@ import pandas as pd
 import json
 from pprint import pprint
 
+
 # camelcase_to_underscore = lambda str: re.sub('(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))', '_\\1', str).lower().strip('_')
 
 def choose_ebert_reviews():
@@ -16,21 +17,22 @@ def choose_ebert_reviews():
         '/html/body/div[1]/div/section/form/section/fieldset[3]/div[1]/div/ul').click()
     ebert_xpath = '/html/body/div[1]/div/section/form/section/fieldset[3]/div[1]/div/div/ul/li[16]'
     ebert_click = driver.find_element_by_xpath(ebert_xpath).click()
-
-
-def scroll_to_bottom(webpage):
-    driver = webdriver.Firefox()
-    driver.get(webpage)
+    scroll_count = 0
     len_of_page = driver.execute_script(
         "window.scrollTo(0, document.body.scrollHeight);var len_of_page=document.body.scrollHeight;return len_of_page;")
     match = False
     while (match == False):
+        scroll_count += 1
         last_count = len_of_page
-        time.sleep(0.45)
+        if (scroll_count >= 5):
+            break
+        time.sleep(0.6)
         len_of_page = driver.execute_script(
             "window.scrollTo(0, document.body.scrollHeight);var len_of_page=document.body.scrollHeight;return len_of_page;")
         if last_count == len_of_page:
             match = True
+        print scroll_count
+    return driver.page_source
 
 
 def get_omdb_data(movie_title):
@@ -73,16 +75,16 @@ def read_review(url):
 
 def read_html_page(home_page):
     movie_data_rows = []
-    result = requests.get(url=home_page)
-    result_content = result.content
+    result_content = choose_ebert_reviews()
     soup_obj = BeautifulSoup(result_content, 'html5lib')
+    # print soup_obj
     wrapper_class = soup_obj.find('div', id='review-list')
     for curr_movie_dom in wrapper_class.find_all('figure'):
-        movie_details = {'movie_title': '', 'reviewed_by': '', 'score': 0.0, 'review_url': '', 'review_text': ''}
+        movie_details = {'movie_title': '', 'reviewed_by': '', 'ebert_score': 0.0, 'review_url': '', 'review_text': ''}
         star_list = []
         movie_title = curr_movie_dom.find('h5', class_='title').a.get_text()
         movie_critic = curr_movie_dom.find('p', class_='byline').get_text().strip()
-        convoluted_rating   = curr_movie_dom.find('span', class_='star-rating').find_all('i')
+        convoluted_rating = curr_movie_dom.find('span', class_='star-rating').find_all('i')
         movie_review_score = get_rating(movie_title, convoluted_rating)
         movie_review_url = home_page + curr_movie_dom.find('h5', class_='title').find_all('a')[0]['href'][8:]
         movie_review = read_review(url=movie_review_url)
@@ -95,13 +97,21 @@ def read_html_page(home_page):
         for curr_key in omdb_dict.keys():
             movie_details[curr_key] = (omdb_dict[curr_key])
         movie_data_rows.append(movie_details)
+        print len(movie_data_rows), movie_details['movie_title']
     return movie_data_rows
 
 
 def save_webpage_to_csv():
     movie_data_rows = read_html_page('http://www.rogerebert.com/reviews')
     x = pd.DataFrame.from_records(movie_data_rows)
-    print x.head()
-    x.to_csv('roger_ebert_reviews.csv',index=False,encoding='utf-8')
+    x.to_csv('twenty_scrolls.csv', index=False, encoding='utf-8')
+
+
+def clean_df(input_csv='roger_ebert_reviews.csv'):
+    input_df = pd.read_csv(input_csv)
+    for curr_column in input_df.Ratings:
+        for i in range(len(input_df[curr_column])):
+            print input_df['Ratings'].iloc[i]
+
 
 save_webpage_to_csv()
