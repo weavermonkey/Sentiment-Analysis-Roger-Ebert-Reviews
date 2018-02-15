@@ -5,10 +5,11 @@ from bs4 import BeautifulSoup
 import time
 import pandas as pd
 import json
+import re
 from pprint import pprint
 
 
-# camelcase_to_underscore = lambda str: re.sub('(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))', '_\\1', str).lower().strip('_')
+camelcase_to_underscore = lambda str: re.sub('(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))', '_\\1', str).lower().strip('_')
 
 def choose_ebert_reviews():
     driver = webdriver.Firefox()
@@ -107,11 +108,12 @@ def save_webpage_to_csv():
     x.to_csv('twenty_scrolls.csv', index=False, encoding='utf-8')
 
 
-def clean_df(input_csv='roger_ebert_reviews.csv'):
-    input_df = pd.read_csv(input_csv)
-    for curr_column in input_df.Ratings:
-        for i in range(len(input_df[curr_column])):
-            print input_df['Ratings'].iloc[i]
+def clean_df(input_df):
+    #print input_df.head()
+    snake_case_columns = []
+    for curr_col in input_df.columns:
+        snake_case_columns.append(camelcase_to_underscore(curr_col))
+    input_df.columns = snake_case_columns
+    print input_df.columns
 
-
-save_webpage_to_csv()
+clean_df(input_df=pd.read_csv('twenty_scrolls.csv'))
