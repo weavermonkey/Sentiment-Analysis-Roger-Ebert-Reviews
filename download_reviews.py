@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
+import re
 from selenium import webdriver
 import requests
+import json
 from bs4 import BeautifulSoup
+from datetime import datetime
 import time
 import pandas as pd
-import json
-import re
+import numpy as np
 from pprint import pprint
 
-
 camelcase_to_underscore = lambda str: re.sub('(((?<=[a-z])[A-Z])|([A-Z](?![A-Z]|$)))', '_\\1', str).lower().strip('_')
+
 
 def choose_ebert_reviews():
     driver = webdriver.Firefox()
@@ -18,21 +20,19 @@ def choose_ebert_reviews():
         '/html/body/div[1]/div/section/form/section/fieldset[3]/div[1]/div/ul').click()
     ebert_xpath = '/html/body/div[1]/div/section/form/section/fieldset[3]/div[1]/div/div/ul/li[16]'
     ebert_click = driver.find_element_by_xpath(ebert_xpath).click()
-    scroll_count = 0
+    driver.implicitly_wait(2)
     len_of_page = driver.execute_script(
         "window.scrollTo(0, document.body.scrollHeight);var len_of_page=document.body.scrollHeight;return len_of_page;")
     match = False
-    while (match == False):
-        scroll_count += 1
+    i = 0
+    while not match:
         last_count = len_of_page
-        if (scroll_count >= 5):
-            break
-        time.sleep(0.6)
+        time.sleep(0.75)
         len_of_page = driver.execute_script(
             "window.scrollTo(0, document.body.scrollHeight);var len_of_page=document.body.scrollHeight;return len_of_page;")
         if last_count == len_of_page:
             match = True
-        print scroll_count
+        i += 1
     return driver.page_source
 
 
@@ -78,7 +78,8 @@ def read_html_page(home_page):
     movie_data_rows = []
     result_content = choose_ebert_reviews()
     soup_obj = BeautifulSoup(result_content, 'html5lib')
-    # print soup_obj
+    with open('html_content_ebert','w') as html_file:
+        html_file.write(str(soup_obj))
     wrapper_class = soup_obj.find('div', id='review-list')
     for curr_movie_dom in wrapper_class.find_all('figure'):
         movie_details = {'movie_title': '', 'reviewed_by': '', 'ebert_score': 0.0, 'review_url': '', 'review_text': ''}
@@ -89,31 +90,48 @@ def read_html_page(home_page):
         movie_review_score = get_rating(movie_title, convoluted_rating)
         movie_review_url = home_page + curr_movie_dom.find('h5', class_='title').find_all('a')[0]['href'][8:]
         movie_review = read_review(url=movie_review_url)
-        omdb_dict = get_omdb_data(movie_title=movie_title)
+        # omdb_dict = get_omdb_data(movie_title=movie_title)
         movie_details['movie_title'] = movie_title.strip()
         movie_details['reviewed_by'] = movie_critic.strip()
         movie_details['ebert_score'] = movie_review_score
         movie_details['review_url'] = movie_review_url
         movie_details['review_text'] = movie_review
-        for curr_key in omdb_dict.keys():
-            movie_details[curr_key] = (omdb_dict[curr_key])
+        movie_details['omdb_url'] = movie_review_url
+        # for curr_key in omdb_dict.keys():
+        #    movie_details[curr_key] = (omdb_dict[curr_key])
         movie_data_rows.append(movie_details)
         print len(movie_data_rows), movie_details['movie_title']
     return movie_data_rows
 
 
-def save_webpage_to_csv():
+def save_webpage_to_csv(output_df_name):
     movie_data_rows = read_html_page('http://www.rogerebert.com/reviews')
     x = pd.DataFrame.from_records(movie_data_rows)
-    x.to_csv('twenty_scrolls.csv', index=False, encoding='utf-8')
+    x.to_csv(output_df_name, index=False, encoding='utf-8')
 
 
 def clean_df(input_df):
-    #print input_df.head()
+    # print input_df.head()
     snake_case_columns = []
+    date_columns = ['dvd', 'released']
+    ohe_columns = ['country', 'genre', 'language']
     for curr_col in input_df.columns:
         snake_case_columns.append(camelcase_to_underscore(curr_col))
     input_df.columns = snake_case_columns
-    print input_df.columns
+    '''
+    input_df.fillna({'dvd':'wololo)'})
+    for x in input_df.dvd:
+        print x
+    '''
+    for date_col in date_columns:
+        input_df[date_col].replace(np.nan, '1 Jan 3000', inplace=True)
+        input_df[date_col] = [datetime.date(datetime.strptime(y, '%d %b %Y')).isoformat() for y in
+                              [x for x in input_df[date_col]]]
+    # print [x for x in input_df['released']]
+    # input_df.to_csv('cleaned_df.csv', index=False)
+    genre_ohe_df = pd.get_dummies(data=input_df, columns=ohe_columns)
+    genre_ohe_df.to_csv('wololo_df.csv', index=False)
 
-clean_df(input_df=pd.read_csv('twenty_scrolls.csv'))
+
+#save_webpage_to_csv('roger_ebert_reviews.csv')
+#choose_ebert_reviews()
