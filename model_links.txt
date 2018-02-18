@@ -1,1 +1,17 @@
 https://towardsdatascience.com/best-research-articles-on-deep-learning-for-text-classification-2015-2016-aaa7950af775
+
+#################################################
+Explaining Recurrent Neural Network Predictions in Sentiment Analysis
+https://arxiv.org/pdf/1706.07206.pdf
+
+##############################################################
+LSTM Networks for Sentiment Analysis
+http://deeplearning.net/tutorial/lstm.html
+
+##############################################################
+Applying Recurrent Neural Networks to Sentiment Analysis of Spanish Tweets
+http://ceur-ws.org/Vol-1896/p8_gsi_tass2017.pdf
+
+##############################################################
+Recurrent Neural Networks for Sentiment Analysis
+http://joaquin.rual.es/assets/pdfs/rnn_class_project.pdf
