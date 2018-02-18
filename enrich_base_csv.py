@@ -14,5 +14,3 @@ for i in range(len(base_csv['movie_title'])):
         curr_review = read_review(url=curr_movie_url)
         with open(curr_file_name, 'w') as file_to_write:
             file_to_write.write(curr_review)
-# csv_with_review_df = pd.DataFrame(base_csv)
-# csv_with_review_df.to_csv('aioo.csv', index=False, encoding='utf-8')
