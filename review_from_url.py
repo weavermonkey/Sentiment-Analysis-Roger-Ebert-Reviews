@@ -2,17 +2,24 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
-from download_reviews import get_rating
 
 initial_url = "https://www.rogerebert.com/reviews?great_movies=0&no_stars=0&order=ol&title=te+rock&filters[great_movies][]=&filters[no_stars][]=&filters[no_stars][]=1&filters[title]=&filters[reviewers]=&filters[genres]=&page="
 next_url = initial_url
 movie_data_rows = []
 i = 0
 
+def get_rating(movie_name, star_param):
+    movie_rating = 0.0
+    star_list = [i.prettify().replace("\n", "").replace("<i class=\"", "").replace("></i>", "").replace("\"", "") for i
+    in star_param]
+    for curr_rating in star_list:
+        if curr_rating == 'icon-star-full':
+            movie_rating += 1
+        else:
+            movie_rating += 0.5
+    return movie_rating
 
 def save_base_csv():
-    # movie_data_rows = []
-    #result_content = requests.get(home_page).content
     soup_obj = BeautifulSoup(open('ebert_complete_site.html','r'), 'html5lib')
     i = 0
     wrapper_class = soup_obj.find('body').find('div', id='review-list')
@@ -30,11 +37,9 @@ def save_base_csv():
         movie_details['ebert.com_score'] = str(movie_review_score)
         movie_details['ebert.com_review_url'] = movie_review_url
         i += 1
-        print i,'\n', movie_details,'\n######################################################'
         with open('all_review_details.csv','ab') as file_to_write:
             csv_writer = csv.writer(file_to_write)
             csv_writer.writerow( [x.encode('utf-8') for x in movie_details.values() ] )
-        #movie_data_rows.append(movie_details
 
 
 def scroll_and_retrieve(num_pages):
