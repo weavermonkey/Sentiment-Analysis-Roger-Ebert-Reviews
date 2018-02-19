@@ -1,4 +1,6 @@
 https://towardsdatascience.com/best-research-articles-on-deep-learning-for-text-classification-2015-2016-aaa7950af775
+Complete Project - https://github.com/cjhutto/vaderSentiment
+Preprocessing - https://github.com/bonzanini/nlp-tutorial/tree/master/notebooks
 
 #################################################
 Explaining Recurrent Neural Network Predictions in Sentiment Analysis
@@ -15,3 +17,11 @@ http://ceur-ws.org/Vol-1896/p8_gsi_tass2017.pdf
 ##############################################################
 Recurrent Neural Networks for Sentiment Analysis
 http://joaquin.rual.es/assets/pdfs/rnn_class_project.pdf
+
+##############################################################
+Some NLP techniques with code
+https://ahmedbesbes.com/how-to-mine-newsfeed-data-and-extract-interactive-insights-in-python.html
+
+##############################################################
+Visualizing it
+http://pythondata.com/text-analytics-visualization/

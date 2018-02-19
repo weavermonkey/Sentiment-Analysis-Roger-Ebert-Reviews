@@ -5,7 +5,7 @@ import os
 base_csv = pd.read_csv('all_review_details.csv').to_dict()
 base_csv['rogerebert.com_review_text'] = {}
 
-for i in range(len(base_csv['movie_title'])):
+for i in range(8700,len(base_csv['movie_title'])):
     curr_movie_url = base_csv['ebert.com_review_url'][i]
     print i, curr_movie_url, '\n#############################'
     curr_file_name = os.path.normpath(
@@ -14,3 +14,4 @@ for i in range(len(base_csv['movie_title'])):
         curr_review = read_review(url=curr_movie_url)
         with open(curr_file_name, 'w') as file_to_write:
             file_to_write.write(curr_review)
+        print curr_review

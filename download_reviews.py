@@ -58,20 +58,23 @@ def read_review(url):
     review_page_raw = requests.get(url=url)
     cleaned_review = []
     soup_obj = BeautifulSoup(review_page_raw.content, 'html5lib')
-    review_paragraphs = soup_obj.find('div', class_='wrapper').find('div', class_='grid content').find_all('section',
-                                                                                                           class_='main fixed-rail')[
-        0].find_all('article', class_='pad entry')[0].find_all('div')[0].find_all('p')
-    raw_review = ''.join(
-        [curr_paragraph.replace("\n", "").replace("<p>", "").replace("</p>", "") for
-         curr_paragraph in ([review_paragraph.prettify() for review_paragraph in review_paragraphs])]).encode('utf-8')
-    review_cleaned = BeautifulSoup(raw_review, 'html5lib', from_encoding='utf-8')
+    try:
+        review_paragraphs = soup_obj.find('div', class_='wrapper').find('div', class_='grid content').find_all('section',
+                                                                                                               class_='main fixed-rail')[
+            0].find_all('article', class_='pad entry')[0].find_all('div')[0].find_all('p')
+        raw_review = ''.join(
+            [curr_paragraph.replace("\n", "").replace("<p>", "").replace("</p>", "") for
+             curr_paragraph in ([review_paragraph.prettify() for review_paragraph in review_paragraphs])]).encode('utf-8')
+        review_cleaned = BeautifulSoup(raw_review, 'html5lib', from_encoding='utf-8')
 
-    for x in review_cleaned.body:
-        if 'bs4.element.Tag' in str(type(x)):
-            cleaned_review.append(x.get_text().encode('utf-8').strip())
-        else:
-            cleaned_review.append((x.encode('utf-8')).strip())
-    return ''.join(cleaned_review)
+        for x in review_cleaned.body:
+            if 'bs4.element.Tag' in str(type(x)):
+                cleaned_review.append(x.get_text().encode('utf-8').strip())
+            else:
+                cleaned_review.append((x.encode('utf-8')).strip())
+        return ''.join(cleaned_review)
+    except:
+        return 'URL Not reachable'
 
 
 def read_html_page(home_page):
