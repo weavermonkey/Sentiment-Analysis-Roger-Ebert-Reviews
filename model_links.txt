@@ -1,5 +1,8 @@
-https://towardsdatascience.com/best-research-articles-on-deep-learning-for-text-classification-2015-2016-aaa7950af775
+Link of Links - https://towardsdatascience.com/best-research-articles-on-deep-learning-for-text-classification-2015-2016-aaa7950af775
+Example toy project - https://sites.google.com/site/miningtwitter/questions/sentiment/sentiment
 Complete Project - https://github.com/cjhutto/vaderSentiment
+Guidelines - https://www.elderresearch.com/hubfs/Whitepaper_The_Seven_Practice_Areas_of_Text_Analytics_Chapter_2_Excerpt.pdf
+Tutorial - https://github.com/dipanjanS/text-analytics-with-python
 Preprocessing - https://github.com/bonzanini/nlp-tutorial/tree/master/notebooks
 
 ##############################################################
