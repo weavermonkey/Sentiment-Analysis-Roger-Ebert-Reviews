@@ -8,10 +8,11 @@ next_url = initial_url
 movie_data_rows = []
 i = 0
 
+
 def get_rating(movie_name, star_param):
     movie_rating = 0.0
     star_list = [i.prettify().replace("\n", "").replace("<i class=\"", "").replace("></i>", "").replace("\"", "") for i
-    in star_param]
+                 in star_param]
     for curr_rating in star_list:
         if curr_rating == 'icon-star-full':
             movie_rating += 1
@@ -19,8 +20,9 @@ def get_rating(movie_name, star_param):
             movie_rating += 0.5
     return movie_rating
 
+
 def save_base_csv():
-    soup_obj = BeautifulSoup(open('ebert_complete_site.html','r'), 'html5lib')
+    soup_obj = BeautifulSoup(open('ebert_complete_site.html', 'r'), 'html5lib')
     i = 0
     wrapper_class = soup_obj.find('body').find('div', id='review-list')
     for curr_movie_dom in wrapper_class.find_all('figure'):
@@ -37,9 +39,9 @@ def save_base_csv():
         movie_details['ebert.com_score'] = str(movie_review_score)
         movie_details['ebert.com_review_url'] = movie_review_url
         i += 1
-        with open('all_review_details.csv','ab') as file_to_write:
+        with open('all_review_details.csv', 'ab') as file_to_write:
             csv_writer = csv.writer(file_to_write)
-            csv_writer.writerow( [x.encode('utf-8') for x in movie_details.values() ] )
+            csv_writer.writerow([x.encode('utf-8') for x in movie_details.values()])
 
 
 def scroll_and_retrieve(num_pages):
@@ -50,6 +52,5 @@ def scroll_and_retrieve(num_pages):
             i += 1
             next_url = initial_url + str(i)
 
-#scroll_and_retrieve(num_pages=100)
 
 save_base_csv()

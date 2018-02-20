@@ -36,9 +36,8 @@ def choose_ebert_reviews():
     return driver.page_source
 
 
-def get_omdb_data(movie_title):
-    request_url = 'http://www.omdbapi.com/?apikey=9f6c117a&t=' + movie_title.replace(' ', '+') + '&plot=full'
-    omdb_data = json.loads(requests.get(request_url).content)
+def get_omdb_data(movie_url):
+    omdb_data = json.loads(requests.get(movie_url).content)
     return omdb_data
 
 
@@ -59,12 +58,14 @@ def read_review(url):
     cleaned_review = []
     soup_obj = BeautifulSoup(review_page_raw.content, 'html5lib')
     try:
-        review_paragraphs = soup_obj.find('div', class_='wrapper').find('div', class_='grid content').find_all('section',
-                                                                                                               class_='main fixed-rail')[
+        review_paragraphs = \
+        soup_obj.find('div', class_='wrapper').find('div', class_='grid content').find_all('section',
+                                                                                           class_='main fixed-rail')[
             0].find_all('article', class_='pad entry')[0].find_all('div')[0].find_all('p')
         raw_review = ''.join(
             [curr_paragraph.replace("\n", "").replace("<p>", "").replace("</p>", "") for
-             curr_paragraph in ([review_paragraph.prettify() for review_paragraph in review_paragraphs])]).encode('utf-8')
+             curr_paragraph in ([review_paragraph.prettify() for review_paragraph in review_paragraphs])]).encode(
+            'utf-8')
         review_cleaned = BeautifulSoup(raw_review, 'html5lib', from_encoding='utf-8')
 
         for x in review_cleaned.body:
@@ -81,7 +82,7 @@ def read_html_page(home_page):
     movie_data_rows = []
     result_content = choose_ebert_reviews()
     soup_obj = BeautifulSoup(result_content, 'html5lib')
-    with open('html_content_ebert','w') as html_file:
+    with open('html_content_ebert', 'w') as html_file:
         html_file.write(str(soup_obj))
     wrapper_class = soup_obj.find('div', id='review-list')
     for curr_movie_dom in wrapper_class.find_all('figure'):
@@ -129,6 +130,3 @@ def clean_df(input_df):
                               [x for x in input_df[date_col]]]
     genre_ohe_df = pd.get_dummies(data=input_df, columns=ohe_columns)
     genre_ohe_df.to_csv('wololo_df.csv', index=False)
-
-def get_omdb_dict(url):
-    pass
