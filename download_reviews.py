@@ -100,8 +100,6 @@ def read_html_page(home_page):
         movie_details['review_url'] = movie_review_url
         movie_details['review_text'] = movie_review
         movie_details['omdb_url'] = movie_review_url
-        # for curr_key in omdb_dict.keys():
-        #    movie_details[curr_key] = (omdb_dict[curr_key])
         movie_data_rows.append(movie_details)
         print len(movie_data_rows), movie_details['movie_title']
     return movie_data_rows
@@ -114,7 +112,6 @@ def save_webpage_to_csv(output_df_name):
 
 
 def clean_df(input_df):
-    # print input_df.head()
     snake_case_columns = []
     date_columns = ['dvd', 'released']
     ohe_columns = ['country', 'genre', 'language']
@@ -130,11 +127,8 @@ def clean_df(input_df):
         input_df[date_col].replace(np.nan, '1 Jan 3000', inplace=True)
         input_df[date_col] = [datetime.date(datetime.strptime(y, '%d %b %Y')).isoformat() for y in
                               [x for x in input_df[date_col]]]
-    # print [x for x in input_df['released']]
-    # input_df.to_csv('cleaned_df.csv', index=False)
     genre_ohe_df = pd.get_dummies(data=input_df, columns=ohe_columns)
     genre_ohe_df.to_csv('wololo_df.csv', index=False)
 
-
-#save_webpage_to_csv('roger_ebert_reviews.csv')
-#choose_ebert_reviews()
+def get_omdb_dict(url):
+    pass

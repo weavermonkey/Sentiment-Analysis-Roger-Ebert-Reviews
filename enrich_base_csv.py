@@ -1,10 +1,13 @@
-from download_reviews import read_review
+from download_reviews import read_review,get_omdb_dict
 import pandas as pd
 import os
 
-base_csv = pd.read_csv('all_review_details.csv').to_dict()
-base_csv['rogerebert.com_review_text'] = {}
 
+base_csv = pd.read_csv('file_with_reviews.csv').to_dict()
+print base_csv.keys()
+base_csv['ombd_url'] = {}
+
+#print pd.read_csv('file_with_reviews.csv').head()
 
 def write_reviews_to_disk():
     for i in range(len(base_csv['movie_title'])):
@@ -26,4 +29,11 @@ def add_reviews_to_csv():
     df_with_reviews = pd.DataFrame(base_csv)
     df_with_reviews.to_csv('file_with_reviews.csv',index=False)
 
-add_reviews_to_csv()
+def add_omdb_to_csv():
+    for curr_movie_index in base_csv['movie_title']:
+        request_url = 'http://www.omdbapi.com/?apikey=9f6c117a&t=' + base_csv['movie_title'][curr_movie_index].replace(' ','+') + '&plot=full'
+        base_csv['ombd_url'][curr_movie_index] = request_url
+    df_with_omdb_url = pd.DataFrame(base_csv)
+    df_with_omdb_url.to_csv('file_with_omdb_url.csv',index=False)
+
+add_omdb_to_csv()
