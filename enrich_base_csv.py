@@ -4,9 +4,11 @@ import os
 import time
 import json
 import ast
+from pandas.io.json import json_normalize
 
-#base_csv = pd.read_csv('file_with_omdb_attr.csv').to_dict()
+# base_csv = pd.read_csv('file_with_omdb_attr.csv').to_dict()
 base_csv = pd.read_csv('wolololo_df.csv').to_dict()
+
 
 def write_reviews_to_disk():
     for i in range(len(base_csv['movie_title'])):
@@ -66,16 +68,14 @@ def split_omdb_json_to_columns():
             for curr_key in curr_dict:
                 if curr_key in enriched_csv:
                     enriched_csv[curr_key][i] = curr_dict[curr_key]
-                    # print '\tKey Added Already\n########################################################'
-                    # print enriched_csv[curr_key][i]
                 else:
                     enriched_csv[curr_key] = {}
                     enriched_csv[curr_key][i] = curr_dict[curr_key]
-                    # print enriched_csv[curr_key][i]
         except:
             pass
     enriched_df = pd.DataFrame(enriched_csv)
-    enriched_df.to_csv('wolololo_df.csv', index=False,encoding='utf-8')
+    enriched_df.to_csv('wolololo_df.csv', index=False, encoding='utf-8')
+
 
 def flatten_json_to_columns():
     normalized_dict = base_csv
@@ -95,4 +95,24 @@ def flatten_json_to_columns():
             '''
     print json_columns
 
-flatten_json_to_columns()
+
+def flatten_ratings_to_columns():
+    for i in range(1000):
+        try:
+            curr_rating_dict = ast.literal_eval(base_csv['Ratings'][i])
+            num_reviews = len(curr_rating_dict)
+            for i in range(num_reviews):
+                curr_source = 'rating_by_' + curr_rating_dict[i]['Source'].lower().replace(' ', '_')
+                # print base_csv['movie_title'][i], curr_rating_dict[i]['Source'],':',curr_rating_dict[i]['Value']
+                if curr_source in base_csv:
+                    base_csv[curr_source][i] = curr_rating_dict[i]['Value']
+                else:
+                    base_csv[curr_source] = {}
+                    base_csv[curr_source][i] = curr_rating_dict[i]['Value']
+        except Exception as e:
+            print i, e
+    normalized_df = pd.DataFrame(base_csv)
+    normalized_df.to_csv('normalized_df.csv', index=False)
+
+
+flatten_ratings_to_columns()
