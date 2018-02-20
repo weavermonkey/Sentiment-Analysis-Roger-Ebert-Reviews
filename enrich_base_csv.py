@@ -5,13 +5,8 @@ import time
 import json
 import ast
 
-base_csv = pd.read_csv('file_with_omdb_attr.csv').to_dict()
-
-
-# base_csv['omdb_json'] = {}
-
-
-# print pd.read_csv('file_with_reviews.csv').head()
+#base_csv = pd.read_csv('file_with_omdb_attr.csv').to_dict()
+base_csv = pd.read_csv('wolololo_df.csv').to_dict()
 
 def write_reviews_to_disk():
     for i in range(len(base_csv['movie_title'])):
@@ -82,5 +77,22 @@ def split_omdb_json_to_columns():
     enriched_df = pd.DataFrame(enriched_csv)
     enriched_df.to_csv('wolololo_df.csv', index=False,encoding='utf-8')
 
+def flatten_json_to_columns():
+    normalized_dict = base_csv
+    json_columns = {}
+    for i in range(100):
+        for curr_key in base_csv.keys():
+            try:
+                ast.literal_eval(normalized_dict[curr_key][i])
+                json_columns[curr_key] = ''
+            except:
+                pass
+            '''
+            if ast.literal_eval(base_csv[curr_key][i]):
+                json_columns[curr_key] = True
+            else:
+                json_columns[curr_key] = False
+            '''
+    print json_columns
 
-split_omdb_json_to_columns()
+flatten_json_to_columns()
