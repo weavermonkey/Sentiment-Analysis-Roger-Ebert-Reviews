@@ -1,6 +1,7 @@
 from download_reviews import read_review, get_omdb_data
 import pandas as pd
 import os
+import time
 
 base_csv = pd.read_csv('file_with_omdb_url.csv').to_dict()
 base_csv['omdb_json'] = {}
@@ -44,10 +45,17 @@ def add_omdb_url_to_csv():
 
 
 def add_omdb_data_to_csv():
-    for i in range(2):
+    for i in range(2,1001):
         curr_omdb_url = base_csv['omdb_url'][i]
-        curr_omdb_json = get_omdb_data(curr_omdb_url )
-        base_csv['omdb_json'][i] = curr_omdb_json
+        try:
+            curr_omdb_json = get_omdb_data(curr_omdb_url )
+            time.sleep(1)
+            base_csv['omdb_json'][i] = curr_omdb_json
+            print curr_omdb_json['Title'], '\n#########################################'
+            print i, curr_omdb_url
+        except Exception as e:
+            print i, curr_omdb_url
+            base_csv['omdb_json'][i] = 'Error getting Data From OMDB'
     df_with_omdb_attr = pd.DataFrame(base_csv)
     df_with_omdb_attr.to_csv('file_with_omdb_attr.csv',index=False)
 
