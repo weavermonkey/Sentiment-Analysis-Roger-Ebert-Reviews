@@ -2,10 +2,13 @@ from download_reviews import read_review, get_omdb_data
 import pandas as pd
 import os
 import time
+import json
+import ast
 
-base_csv = pd.read_csv('file_with_omdb_url.csv').to_dict()
-base_csv['omdb_json'] = {}
+base_csv = pd.read_csv('file_with_omdb_attr.csv').to_dict()
 
+
+# base_csv['omdb_json'] = {}
 
 
 # print pd.read_csv('file_with_reviews.csv').head()
@@ -45,11 +48,10 @@ def add_omdb_url_to_csv():
 
 
 def add_omdb_data_to_csv():
-    for i in range(2,1001):
+    for i in range(1001, 10781):
         curr_omdb_url = base_csv['omdb_url'][i]
         try:
-            curr_omdb_json = get_omdb_data(curr_omdb_url )
-            time.sleep(1)
+            curr_omdb_json = get_omdb_data(curr_omdb_url)
             base_csv['omdb_json'][i] = curr_omdb_json
             print curr_omdb_json['Title'], '\n#########################################'
             print i, curr_omdb_url
@@ -57,6 +59,28 @@ def add_omdb_data_to_csv():
             print i, curr_omdb_url
             base_csv['omdb_json'][i] = 'Error getting Data From OMDB'
     df_with_omdb_attr = pd.DataFrame(base_csv)
-    df_with_omdb_attr.to_csv('file_with_omdb_attr.csv',index=False)
+    df_with_omdb_attr.to_csv('file_with_omdb_attr.csv', mode='a', header=False, index=False)
 
-add_omdb_data_to_csv()
+
+def split_omdb_json_to_columns():
+    enriched_csv = base_csv
+    for i in range(1000):
+        try:
+            curr_dict = ast.literal_eval(enriched_csv['omdb_json'][i])
+            print i, curr_dict['Title'], len(curr_dict.keys())
+            for curr_key in curr_dict:
+                if curr_key in enriched_csv:
+                    enriched_csv[curr_key][i] = curr_dict[curr_key]
+                    # print '\tKey Added Already\n########################################################'
+                    # print enriched_csv[curr_key][i]
+                else:
+                    enriched_csv[curr_key] = {}
+                    enriched_csv[curr_key][i] = curr_dict[curr_key]
+                    # print enriched_csv[curr_key][i]
+        except:
+            pass
+    enriched_df = pd.DataFrame(enriched_csv)
+    enriched_df.to_csv('wolololo_df.csv', index=False,encoding='utf-8')
+
+
+split_omdb_json_to_columns()
