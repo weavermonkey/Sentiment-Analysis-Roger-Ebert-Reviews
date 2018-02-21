@@ -6,6 +6,16 @@ Guidelines - https://www.elderresearch.com/hubfs/Whitepaper_The_Seven_Practice_A
 Tutorial - https://github.com/dipanjanS/text-analytics-with-python
 Preprocessing - https://github.com/bonzanini/nlp-tutorial/tree/master/notebooks
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Similar Github Projects %%%%%%%%%%%%%%%%%%%%%%%%%
+https://github.com/kbastani/sentiment-analysis-movie-reviews
+https://github.com/ayacha/CS522-Sentiment-Analysis-of-Movie-Reviews-Project
+https://github.com/rafacarrascosa/samr
+https://github.com/Sapphirine/Movie-Review-Sentiment-Analysis
+http://vumaasha.github.io/pychennai-sentiment-analysis/#/title
+https://github.com/josephmisiti/kaggle-movie-sentiment
+
+
 ##############################################################
 How to solve 90% of NLP problems
 https://blog.insightdatascience.com/how-to-solve-90-of-nlp-problems-a-step-by-step-guide-fda605278e4e

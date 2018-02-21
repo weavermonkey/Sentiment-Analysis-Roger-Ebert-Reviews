@@ -26,12 +26,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="model_links.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="model_links.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model_links.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
               <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="geckodriver.log" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/geckodriver.log">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="13" column="22" lean-forward="true" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aiooo_df.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/aiooo_df.csv">
+          <provider selected="true" editor-type-id="LargeFileEditor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
             </state>
           </provider>
         </entry>
@@ -488,7 +507,14 @@
       <option name="project" value="LOCAL" />
       <updated>1519191749851</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Add link to blog on Medium - How to solve 90% of NLP problems.">
+      <created>1519192132166</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1519192132166</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -544,7 +570,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add function to select 'Roger Ebert' from www.rogerebert.com/reviews" />
     <MESSAGE value="Add function to keep scrolling till reviews last" />
     <MESSAGE value="Add function to movie name, reviewer, and movie score from loaded page" />
     <MESSAGE value="Add function to save webpage to CSV" />
@@ -569,7 +594,8 @@
     <MESSAGE value="Add function to flatten 'Reviews' JSON. Still not elegant, the function is really specific" />
     <MESSAGE value="Add link to EXACT same project. Someone did the same freakin' thing!" />
     <MESSAGE value="Add link to blog on Medium - How to solve 90% of NLP problems." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add link to blog on Medium - How to solve 90% of NLP problems." />
+    <MESSAGE value="Add links - Github projects doing sentiment analysis on movie reviews" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add links - Github projects doing sentiment analysis on movie reviews" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -587,16 +613,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/enrich_base_csv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1904">
-          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#55#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/review_from_url.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="765">
@@ -965,10 +981,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/aiooo_df.csv">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/model_links.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/geckodriver.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="22" lean-forward="true" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
           <folding />
         </state>
       </provider>
