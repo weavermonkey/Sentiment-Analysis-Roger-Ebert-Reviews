@@ -14,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="enrich_base_csv.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="enrich_base_csv.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/enrich_base_csv.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
@@ -22,6 +22,16 @@
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="model_links.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/model_links.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -111,9 +121,9 @@
         <option value="$PROJECT_DIR$/write_async.py" />
         <option value="$PROJECT_DIR$/get_all_review_urls.py" />
         <option value="$PROJECT_DIR$/review_from_url.py" />
-        <option value="$PROJECT_DIR$/model_links.txt" />
         <option value="$PROJECT_DIR$/download_reviews.py" />
         <option value="$PROJECT_DIR$/enrich_base_csv.py" />
+        <option value="$PROJECT_DIR$/model_links.txt" />
       </list>
     </option>
   </component>
@@ -471,7 +481,14 @@
       <option name="project" value="LOCAL" />
       <updated>1519127595515</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Add link to EXACT same project. Someone did the same freakin' thing!">
+      <created>1519191749851</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1519191749851</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -551,7 +568,8 @@
     <MESSAGE value="Add function to see which columns are STILL json, try flattening. WIP, I know that only 'Reviews' needs work. &#10;#TODO: Finish this function later." />
     <MESSAGE value="Add function to flatten 'Reviews' JSON. Still not elegant, the function is really specific" />
     <MESSAGE value="Add link to EXACT same project. Someone did the same freakin' thing!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add link to EXACT same project. Someone did the same freakin' thing!" />
+    <MESSAGE value="Add link to blog on Medium - How to solve 90% of NLP problems." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add link to blog on Medium - How to solve 90% of NLP problems." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -897,13 +915,6 @@
     <entry file="file://$PROJECT_DIR$/read_html_from_file.py" />
     <entry file="file://$PROJECT_DIR$/write_async.py" />
     <entry file="file://$PROJECT_DIR$/get_all_review_urls.py" />
-    <entry file="file://$PROJECT_DIR$/model_links.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="4" column="62" lean-forward="false" selection-start-line="4" selection-start-column="62" selection-end-line="4" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/file_with_omdb_url.csv">
       <provider selected="true" editor-type-id="LargeFileEditor">
         <state relative-caret-position="0">
@@ -951,6 +962,14 @@
           <folding>
             <element signature="e#0#55#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model_links.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

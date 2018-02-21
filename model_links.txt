@@ -7,6 +7,18 @@ Tutorial - https://github.com/dipanjanS/text-analytics-with-python
 Preprocessing - https://github.com/bonzanini/nlp-tutorial/tree/master/notebooks
 
 ##############################################################
+How to solve 90% of NLP problems
+https://blog.insightdatascience.com/how-to-solve-90-of-nlp-problems-a-step-by-step-guide-fda605278e4e
+
+##############################################################
+Some NLP techniques with code
+https://ahmedbesbes.com/how-to-mine-newsfeed-data-and-extract-interactive-insights-in-python.html
+
+##############################################################
+Visualizing it
+http://pythondata.com/text-analytics-visualization/
+
+##############################################################
 Explaining Recurrent Neural Network Predictions in Sentiment Analysis
 https://arxiv.org/pdf/1706.07206.pdf
 
@@ -21,11 +33,3 @@ http://ceur-ws.org/Vol-1896/p8_gsi_tass2017.pdf
 ##############################################################
 Recurrent Neural Networks for Sentiment Analysis
 http://joaquin.rual.es/assets/pdfs/rnn_class_project.pdf
-
-##############################################################
-Some NLP techniques with code
-https://ahmedbesbes.com/how-to-mine-newsfeed-data-and-extract-interactive-insights-in-python.html
-
-##############################################################
-Visualizing it
-http://pythondata.com/text-analytics-visualization/
